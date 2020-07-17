@@ -1,8 +1,10 @@
 <template>
   <nav>
-    <div class="searchshow">
-
-    </div>
+      <div class="sidebarleft">
+        <div class="buttonside" @click="show">
+          <i class="fa fa-bars"></i>
+        </div>
+      </div>
     <div class="logoNav">
       <router-link to="/"><img src="@/assets/image/Exhibition.png" alt=""></router-link>
     </div>
@@ -38,16 +40,16 @@
         <div class="mydata">
           <ul>
             <li>
-              <router-link to="#">{{mydata.email}}</router-link>
+              <router-link to="#">{{mydata[0].email}}</router-link>
             </li>
             <li>
-              <router-link to="#">bagus</router-link>
+              <router-link to="#">{{mydata[0].name}}</router-link>
             </li>
             <li @click="logout"><a href="#">Logout</a></li>
           </ul>
         </div>
       </div>
-      <i class="fa fa-bars" @click="burger"></i>
+      <i class="fa fa-bars burgerrespo" @click="burger"></i>
       <i class="fa fa-arrow-left left1" @click="back"></i>
       <i class="fa fa-arrow-left left2" @click="back2"></i>
     </div>
@@ -67,24 +69,28 @@ export default {
     };
   },
   methods: {
+    show() {
+      console.log(document.querySelector('.sidebarvid').classList.toggle('top0'));
+    },
     showname() {
-      document.querySelector('.mydata').classList.toggle('left1show');
+      console.log(document.querySelector('.mydata'));
+      document.querySelector('.mydata').classList.toggle('topp0');
     },
     back2() {
       document.querySelector('.sidebarvid').classList.remove('sidegeser');
       document.querySelector('.left2').classList.remove('left1show');
-      document.querySelector('.chat').classList.remove('postAbso');
+      document.querySelector('.chat').classList.remove('right0');
       document.querySelector('.left1').classList.toggle('left1show');
     },
     back() {
       document.querySelector('.left1').classList.remove('left1show');
       document.querySelector('.sidebarvid').classList.toggle('displayflex');
-      document.querySelector('.fa-bars').classList.remove('fabarshide');
+      document.querySelector('.burgerrespo').classList.remove('fabarshide');
     },
     burger() {
       document.querySelector('.left1').classList.toggle('left1show');
       document.querySelector('.sidebarvid').classList.toggle('displayflex');
-      document.querySelector('.fa-bars').classList.toggle('fabarshide');
+      document.querySelector('.burgerrespo').classList.toggle('fabarshide');
     },
     search() {
       document.querySelector('.fa-search').classList.toggle('forhide');
@@ -106,20 +112,11 @@ export default {
         this.mydata = profileMe;
       });
     },
-    // getUser() {
-    //   db.collection('users').where('email', '==', this.mydata).onSnapshot((querySnapshot) => {
-    //     const profileMe = [];
-    //     querySnapshot.forEach((doc) => {
-    //       profileMe.push(doc.data());
-    //     });
-    //     this.profileMe = profileMe;
-    //   });
-    // },
   },
   created() {
-    // if (firebase.auth().currentUser) {
-    //   this.mydata = firebase.auth().currentUser.email;
-    // }
+    if (firebase.auth().currentUser) {
+      this.mydata = firebase.auth().currentUser.email;
+    }
     // console.log(firebase.auth().currentUser);
     this.getUser();
   },
@@ -127,12 +124,38 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .topp0{
+    top: 60px !important;
+  }
+  .sidebarleft{
+    left: 5px;
+    position: absolute;
+    width: 70px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    .buttonside{
+      background: #39A1FF;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 45px;
+      height: 40px;
+      cursor: pointer;
+      position: absolute;
+      box-shadow: 0 0 10px 0 rgba(0,0,0,0.2);
+      border: 0.5px solid #3387d1;
+      .fa-bars{
+        font-size: 24px;
+        color: white;
+      }
+    }
+  }
   .fabarshide{
     display: none !important;
     opacity: 0;
-  }
-  .left1show{
-    display: block !important;
   }
   .fa-close{
     display: none;
@@ -231,7 +254,8 @@ export default {
         height: 45px;
         border-radius: 100%;
         .mydata{
-          display: none;
+          transition: .3s all;
+          top: -300%;
           position: absolute;
           background: #39A1FF;
         }
@@ -265,16 +289,6 @@ export default {
           border-radius: 100%;
           object-fit: cover;
           cursor: pointer;
-        }
-        img:hover{
-          // display: block;
-          background: white;
-        }
-        img:hover .mydata{
-          display: block !important;
-        }
-        img:hover .mydata ul{
-          display: block;
         }
       }
       .fa-bars{
@@ -318,7 +332,7 @@ export default {
         position: relative;
       }
     }
-    .fa-bars{
+    .burgerrespo{
       z-index: 2;
       display: block !important;
       margin: 0 !important;
@@ -337,7 +351,6 @@ export default {
       label{
         z-index: 2;
         i{
-          // margin-left: 45px;
           font-size: 20px;
           color: whitesmoke !important;
         }
@@ -362,6 +375,11 @@ export default {
     .forshow{
       display: block !important;
     }
-
+    .sidebarleft{
+      display: none;
+    }
+    .left1show{
+    display: block !important;
+    }
   }
 </style>

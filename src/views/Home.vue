@@ -5,16 +5,14 @@
     </div>
     <div class="content">
       <div class="sidebarvid">
-        <div class="sidebarleft">
-          <div class="buttonside" @click="show">
-            <i class="fa fa-bars"></i>
+        <div class="siderelative">
+          <div class="allicon">
+            <div class="chats" @click="chats">
+              <i class="fa fa-comments comments"></i>
+            </div>
+            <i class="fa fa-home icon"></i>
+            <i class="fa fa-user icon"></i>
           </div>
-        </div>
-        <div class="allicon">
-          <p class="chats" @click="chats">Chat</p>
-          <i class="fa fa-home"></i>
-          <i class="fa fa-home"></i>
-          <i class="fa fa-home"></i>
         </div>
       </div>
       <div class="video">
@@ -32,7 +30,7 @@
       </div>
       <div class="chat">
         <div class="info">
-          <div class="chat infopeople" @click="chat"
+          <div class="chatppl infopeople" @click="chat"
           v-bind:class="{active: isActive == 'chat'}">
             <p>Chat</p>
           </div>
@@ -125,12 +123,8 @@ export default {
     chats() {
       document.querySelector('.left2').classList.toggle('left1show');
       document.querySelector('.left1').classList.remove('left1show');
-      document.querySelector('.chat').classList.add('postAbso');
+      document.querySelector('.chat').classList.add('right0');
       document.querySelector('.sidebarvid').classList.toggle('sidegeser');
-    },
-    show() {
-      document.querySelector('.sidebarvid').classList.toggle('marginleft');
-      document.querySelector('.buttonside').classList.toggle('left');
     },
     chat() {
       this.code = 1;
@@ -168,7 +162,10 @@ export default {
         from: this.authUser[0].name,
         createdAt: new Date(),
         time: `${today.getHours()}:${today.getMinutes()} | ${today.getDay()}`,
-      });
+      })
+        .then(() => {
+          this.autoScrollBottom();
+        });
       this.message = null;
     },
     getUser() {
@@ -178,7 +175,6 @@ export default {
           profileMe.push(doc.data());
         });
         this.authUser = profileMe;
-        console.log(this.authUser);
       });
     },
     showMessage() {
@@ -189,13 +185,19 @@ export default {
             allMessages.push(doc.data());
           });
           this.themessages = allMessages;
-          console.log(this.themessages);
+          setTimeout(() => {
+            this.autoScrollBottom();
+          }, 500);
         });
+    },
+    autoScrollBottom() {
+      const box = document.querySelector('.inbox');
+      box.scrollTop = box.scrollHeight;
     },
   },
   mounted() {
-    const src = 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8';
-    this.playVideo(src);
+    // const src = 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8';
+    // this.playVideo(src);
     this.showMessage();
   },
   created() {
@@ -208,6 +210,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .top0{
+    top: 0 !important;
+  }
   .barshide{
     display: none !important;
   }
@@ -248,55 +253,38 @@ export default {
       height: calc(100vh - 60px);
       display: flex;
       position: relative;
-      // overflow: hidden;
       .sidebarvid{
-        position: relative;
+        position: absolute;
+        z-index: 3;
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 3%;
-        height: 100%;
-        margin-left: -41px;
+        width: 70px;
+        // height: auto;
+        transition: 1s all;
+        top: -100%;
+        margin-left: 5px;
         background: #39A1FF;
-        .sidebarleft{
+        .siderelative{
           position: relative;
           width: 100%;
-          height: 40px;
-        }
-        .buttonside{
-          background: #39A1FF;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 100%;
-          height: 40px;
-          z-index: 3;
-          cursor: pointer;
-          position: absolute;
-          left: 41px;
-          i{
-            font-size: 24px;
-            color: white;
-          }
-        }
-        .buttonside:hover{
-          background: rgb(194, 194, 194);
-        }
-        .allicon{
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          // justify-content: center;
-          i{
-            margin: 5px 0;
-            cursor: pointer;
-            font-size: 24px;
-            // height: 40px;
-            padding: 10px;
-            width: 100%;
-          }
-          i:hover{
-            background: rgb(194, 194, 194);
+          .allicon{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .icon{
+              cursor: pointer;
+              font-size: 22px;
+              padding: 15px 10px;
+              width: 100%;
+              display: flex;
+              justify-content: center;
+              // border-bottom: 1px solid white;
+              color: white;
+            }
+            .icon:hover{
+              background: #054883;
+            }
           }
         }
       }
@@ -306,9 +294,11 @@ export default {
         background: #000;
       }
       .chat{
+        position: relative;
         width: 30%;
         height: 100%;
         background: white;
+        transition: 1s all;
         .info{
           width: 100%;
           height: 4rem;
@@ -321,7 +311,7 @@ export default {
             justify-content: center;
             align-items: center;
           }
-          .chat{
+          .chatppl{
             background: #F1F2F6;
             border: 2px solid #ECEDF1;
           }
@@ -451,7 +441,7 @@ export default {
     }
   }
   .left{
-    left: 0px !important;
+    left: 5px !important;
   }
   .marginleft{
     margin-left: 0px !important;
@@ -482,8 +472,12 @@ export default {
     }
     .chat{
       width: 100% !important;
-      display: none;
+      // display: none;
+      right: -100%;
       z-index: 1;
+    }
+    .right0{
+      right: 0 !important;
     }
     .infopeople{
       width: 50% !important;
@@ -507,9 +501,11 @@ export default {
       display: none;
     }
     .sidebarvid{
+      top: 0 !important;
       z-index: 4;
       margin: 0px !important;
       width: 100% !important;
+      height: 100% ;
       left: -100% ;
     }
     .sidegeser{
@@ -517,23 +513,26 @@ export default {
     }
     .allicon{
       width: 100%;
-      i{
+      .icon{
         display: flex;
         justify-content: center;
         border-bottom: 1px solid rgb(194, 194, 194);
       }
     }
-    .chats, .peoples{
-      display: block;
+    .chats{
+      display: flex;
+      justify-content: center;
       cursor: pointer;
       width: 100%;
       height: 45px;
       padding: 10px 35px;
-      border-bottom: 1px solid rgb(194, 194, 194);
+      border-bottom: 1px solid #c2c2c2;
+      border-top: 1px solid #fffefe;
       margin: 5px 0;
-    }
-    .chats:hover{
-      background: rgb(194, 194, 194) !important;
+      .comments{
+        font-size: 20px;
+        color: white;
+      }
     }
     .peoples:hover{
       background: rgb(194, 194, 194) !important;

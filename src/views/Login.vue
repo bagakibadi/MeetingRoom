@@ -1,9 +1,9 @@
 <template>
   <div class="container">
     <div class="boxlogin">
-      <div>
+      <!-- <div>
         <i class="fa fa-arrow-left"></i>
-      </div>
+      </div> -->
       <div class="judul1">
         <h1>Sign in to continue</h1>
       </div>

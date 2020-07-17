@@ -2,7 +2,9 @@
   <div class="container">
     <div class="boxlogin">
       <div>
-        <i class="fa fa-arrow-left"></i>
+        <router-link to="/login">
+          <i class="fa fa-arrow-left"></i>
+        </router-link>
       </div>
       <div class="judul1">
         <h1>Create an Account</h1>
