@@ -1,9 +1,6 @@
 <template>
   <div class="container">
     <div class="boxlogin">
-      <!-- <div>
-        <i class="fa fa-arrow-left"></i>
-      </div> -->
       <div class="judul1">
         <h1>Sign in to continue</h1>
       </div>
@@ -36,6 +33,7 @@
 
 <script>
 import firebase from 'firebase';
+import Swal from 'sweetalert2';
 
 export default {
   name: 'Login',
@@ -48,12 +46,24 @@ export default {
   methods: {
     login() {
       firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-        .then((result) => {
-          console.log(result);
-          this.$router.push('/');
+        .then(() => {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            text: 'Login Success',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          setTimeout(() => {
+            this.$router.push('/');
+          }, 1700);
         })
         .catch((error) => {
-          console.log(error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops..',
+            text: error.message,
+          });
         });
     },
   },

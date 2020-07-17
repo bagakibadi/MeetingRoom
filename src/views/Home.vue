@@ -17,7 +17,7 @@
       </div>
       <div class="video">
         <div class="judulVideo">
-          <h1>Judul</h1>
+          <h1>Avatar</h1>
         </div>
         <div class="player">
             <video-player ref="videoPlayer"
@@ -128,12 +128,10 @@ export default {
     },
     chat() {
       this.code = 1;
-      console.log(this.code);
       this.isActive = 'chat';
     },
     people() {
       this.isActive = 'people';
-      console.log(this.code);
       this.code = 2;
     },
     onPlayerPlay(player) {
@@ -196,8 +194,8 @@ export default {
     },
   },
   mounted() {
-    // const src = 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8';
-    // this.playVideo(src);
+    const src = 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8';
+    this.playVideo(src);
     this.showMessage();
   },
   created() {

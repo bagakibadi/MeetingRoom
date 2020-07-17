@@ -70,10 +70,9 @@ export default {
   },
   methods: {
     show() {
-      console.log(document.querySelector('.sidebarvid').classList.toggle('top0'));
+      document.querySelector('.sidebarvid').classList.toggle('top0');
     },
     showname() {
-      console.log(document.querySelector('.mydata'));
       document.querySelector('.mydata').classList.toggle('topp0');
     },
     back2() {

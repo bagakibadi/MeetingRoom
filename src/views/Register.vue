@@ -36,6 +36,7 @@
 
 <script>
 import firebase from 'firebase';
+import Swal from 'sweetalert2';
 
 export default {
   name: 'Register',
@@ -58,13 +59,9 @@ export default {
               status: true,
               photo: 'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png',
             });
-          // eslint-disable-next-line no-alert
-          // alert('Register Success!');
         })
         .catch((err) => {
           console.log(err);
-          // eslint-disable-next-line no-alert
-          // alert(`Oops ${err.message}`);
         });
     },
     register() {
@@ -77,9 +74,39 @@ export default {
               name: this.fullname,
               status: true,
             });
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            text: 'Register Success',
+            showConfirmButton: false,
+            timer: 3500,
+          });
+          setTimeout(() => {
+            this.$router.push('/login');
+          }, 3000);
         })
         .catch((error) => {
           console.log(error);
+          console.log(error.code === 'auth/weak-password');
+          if (error.code === 'auth/weak-password') {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops..',
+              text: error.message,
+            });
+          } else if (error.code === 'auth/email-already-in-use') {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops..',
+              text: `${error.message} Please Login `,
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops..',
+              text: error.message,
+            });
+          }
         });
     },
   },
